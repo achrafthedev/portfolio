@@ -54,7 +54,7 @@ export default function App() {
           </div>
           <div style={{ flex: '0 0 auto', display: 'flex', justifyContent: 'center', width: '100%', maxWidth: '350px' }}>
             <img 
-              src="/profile.png" 
+              src={`${import.meta.env.BASE_URL}profile.png`} 
               alt="Achraf Chardoudi" 
               style={{
                 width: '100%',
