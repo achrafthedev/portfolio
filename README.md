@@ -20,8 +20,8 @@ You can run this project using either **Docker** (recommended) or locally with *
 ### Option 1: Using Docker (Recommended)
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/achrafthedev/portfolio.git
+   cd portfolio
    ```
 2. Build and start the container:
    ```bash
@@ -73,7 +73,7 @@ Deployment is completely automated. To publish your portfolio online for free:
 1. Push your code to a public GitHub repository.
 2. Go to your repository settings on GitHub -> **Pages**.
 3. Under **Build and deployment**, ensure the source is set to **GitHub Actions**.
-4. The included `.github/workflows/deploy.yml` file will automatically trigger a build and publish your site to `https://yourusername.github.io/your-repo-name/` every time you commit to `main`.
+4. The included `.github/workflows/deploy.yml` file will automatically trigger a build and publish your site to `https://achrafthedev.github.io/portfolio/` every time you commit to `main`.
 
 ## 📄 License
 
