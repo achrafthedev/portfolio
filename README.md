@@ -2,7 +2,7 @@
 
 A modern, highly-customizable, Dockerized React portfolio featuring a premium dark-mode **glassmorphism UI**, micro-animations, automatic English/French **internationalization**, and out-of-the-box **GitHub Actions CI/CD** for GitHub Pages.
 
-Designed and originally built by [Achraf Chardoudi](https://github.com/achrafthedev). Feel free to fork and use this as a base for your own engineering or design portfolio!
+Designed and originally built by [Achraf Chardoudi](https://github.com/achrafthedev). Feel free to fork and use this as a base for your own engineering portfolio!
 
 ## ✨ Features
 
