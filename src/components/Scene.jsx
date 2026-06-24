@@ -44,9 +44,9 @@ function FloatingCode() {
       <Float speed={2.5} rotationIntensity={1} floatIntensity={2}>
         <Text
           position={[5, 2, -4]}
-          fontSize={1.2}
+          fontSize={1.8}
           color="#38bdf8"
-          fillOpacity={0.6}
+          fillOpacity={0.9}
           rotation={[0, -0.2, 0]}
         >
           {`{ }`}
@@ -55,9 +55,9 @@ function FloatingCode() {
       <Float speed={2} rotationIntensity={1.5} floatIntensity={2.5}>
         <Text
           position={[-3.5, -2.5, -3]}
-          fontSize={1}
+          fontSize={1.5}
           color="#818cf8"
-          fillOpacity={0.5}
+          fillOpacity={0.9}
           rotation={[0, 0.4, 0]}
         >
           {`</>`}
@@ -90,6 +90,8 @@ export default function Scene() {
         
         <DeveloperShapes />
       </Canvas>
+      {/* Dark overlay to ensure foreground HTML text remains highly legible against the bright 3D models */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(2, 6, 23, 0.4)' }} />
     </div>
   );
 }
