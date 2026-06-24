@@ -12,6 +12,12 @@ export const translations = {
     private_project: "Private Source",
     lang_fr: "Passer en Français",
     lang_en: "Switch to English",
+    education_title: "Education & Certifications",
+    education_desc: "Academic background and official degrees.",
+    status_preparing: "In Progress",
+    status_obtained: "Obtained",
+    verify_rncp: "Verify RNCP",
+    verify_diploma: "View Certificate",
   },
   fr: {
     hero_greeting: "Bonjour, je suis",
@@ -26,6 +32,12 @@ export const translations = {
     private_project: "Code Privé",
     lang_fr: "Passer en Français",
     lang_en: "Switch to English",
+    education_title: "Formation & Diplômes",
+    education_desc: "Parcours académique et certifications officielles.",
+    status_preparing: "En préparation",
+    status_obtained: "Obtenu",
+    verify_rncp: "Voir RNCP",
+    verify_diploma: "Voir le Certificat",
   }
 };
 
@@ -164,5 +176,30 @@ export const projects = [
     desc_fr: 'Développement du site vitrine principal de Goalmap. Création d\'une plateforme haute performance et optimisée pour le SEO reposant sur Java 11, Spring Boot et le moteur de template Thymeleaf pour fournir un contenu dynamique.',
     tags: ['Java 11', 'Spring Boot', 'Thymeleaf', 'SEO'],
     isPublic: false
+  }
+];
+
+export const diplomas = [
+  {
+    id: 'master',
+    status: 'preparing',
+    title_en: "Master's Degree: Expert in Digital & Technological Transformation",
+    title_fr: "Mastère : Expert en transformation digitale et technologique",
+    school: "HETIC",
+    rncp_link: "https://www.francecompetences.fr/recherche/rncp/36209/",
+    linkedin_link: "",
+    desc_en: "Currently preparing a Master's degree equivalent (RNCP Level 7) specializing in complex systems architecture, team leadership, and digital transformation.",
+    desc_fr: "En cours de préparation du mastère (Titre RNCP Niveau 7) spécialisé dans l'architecture de systèmes complexes, le leadership technique et la transformation numérique."
+  },
+  {
+    id: 'bachelor',
+    status: 'obtained',
+    title_en: "Bachelor's Degree: Application Developer & Designer",
+    title_fr: "Bachelor : Concepteur Développeur d'Applications",
+    school: "HETIC",
+    rncp_link: "https://www.francecompetences.fr/recherche/rncp/36146/",
+    linkedin_link: "https://www.linkedin.com/in/achrafchardoudi/overlay/Certifications/618479261/treasury/?profileId=ACoAADePMBkBrg7mGvajd7BhXGkLAh6oMUml7Z0",
+    desc_en: "Obtained degree (RNCP Level 6) focused on full-stack web development, software engineering, and application design.",
+    desc_fr: "Diplôme obtenu (Titre RNCP Niveau 6) avec une spécialisation en développement web full-stack, ingénierie logicielle et conception d'applications."
   }
 ];

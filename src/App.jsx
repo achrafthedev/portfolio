@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProjectCard from './components/ProjectCard';
-import { translations, projects } from './data';
-import { Github, Linkedin, Phone } from 'lucide-react';
+import { translations, projects, diplomas } from './data';
+import { Github, Linkedin, Phone, Award, ExternalLink, CheckCircle, Clock } from 'lucide-react';
 
 export default function App() {
   const [lang, setLang] = useState('en');
@@ -64,6 +64,62 @@ export default function App() {
                 objectFit: 'cover'
               }} 
             />
+          </div>
+        </div>
+      </section>
+
+      <section id="education" style={{ paddingBottom: '8rem' }}>
+        <div className="animate-fade-in delay-200">
+          <h2>{t.education_title}</h2>
+          <p style={{ marginBottom: '3rem' }}>{t.education_desc}</p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {diplomas.map((diploma) => (
+              <div key={diploma.id} className="glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '2rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.4rem', color: '#f8fafc', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <Award size={24} color="#38bdf8" />
+                      {lang === 'fr' ? diploma.title_fr : diploma.title_en}
+                    </h3>
+                    <p style={{ color: '#94a3b8', fontSize: '1rem', fontWeight: 500 }}>
+                      {diploma.school}
+                    </p>
+                  </div>
+                  <div style={{ 
+                    padding: '0.4rem 1rem', 
+                    borderRadius: '20px', 
+                    fontSize: '0.85rem', 
+                    fontWeight: 600,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    backgroundColor: diploma.status === 'obtained' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(234, 179, 8, 0.1)',
+                    color: diploma.status === 'obtained' ? '#22c55e' : '#eab308'
+                  }}>
+                    {diploma.status === 'obtained' ? <CheckCircle size={16} /> : <Clock size={16} />}
+                    {diploma.status === 'obtained' ? t.status_obtained : t.status_preparing}
+                  </div>
+                </div>
+
+                <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
+                  {lang === 'fr' ? diploma.desc_fr : diploma.desc_en}
+                </p>
+
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+                  {diploma.rncp_link && (
+                    <a href={diploma.rncp_link} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ display: 'inline-flex', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                      {t.verify_rncp} <ExternalLink size={16} />
+                    </a>
+                  )}
+                  {diploma.linkedin_link && (
+                    <a href={diploma.linkedin_link} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ display: 'inline-flex', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                      {t.verify_diploma} <ExternalLink size={16} />
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
