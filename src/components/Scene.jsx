@@ -1,16 +1,14 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Stars, Float, Sphere, Box, Cylinder, Text } from '@react-three/drei';
+import { Stars, Float, Box, Cylinder, Text } from '@react-three/drei';
 
 function ServerContainer() {
   return (
     <Float speed={1.5} rotationIntensity={1.5} floatIntensity={2}>
       <group position={[-4, 1, -5]} rotation={[0.4, 0.6, 0]}>
-        {/* Outer wireframe (Represents Docker/Container) */}
         <Box args={[1.8, 1.8, 1.8]}>
-          <meshBasicMaterial color="#38bdf8" wireframe transparent opacity={0.3} />
+          <meshBasicMaterial color="#22d3ee" wireframe transparent opacity={0.25} />
         </Box>
-        {/* Inner solid core (Represents App/Logic) */}
         <Box args={[0.8, 0.8, 0.8]}>
           <meshPhysicalMaterial color="#818cf8" transmission={0.8} roughness={0.2} />
         </Box>
@@ -23,7 +21,6 @@ function DatabaseStack() {
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={1.5}>
       <group position={[4, -2, -6]} rotation={[0.2, -0.4, 0]}>
-        {/* Stack of cylinders representing a SQL/NoSQL Database */}
         <Cylinder args={[1, 1, 0.6, 32]} position={[0, 0.8, 0]}>
           <meshPhysicalMaterial color="#a78bfa" transmission={0.9} roughness={0.1} />
         </Cylinder>
@@ -45,8 +42,8 @@ function FloatingCode() {
         <Text
           position={[5, 2, -4]}
           fontSize={1.8}
-          color="#38bdf8"
-          fillOpacity={0.9}
+          color="#22d3ee"
+          fillOpacity={0.8}
           rotation={[0, -0.2, 0]}
         >
           {`{ }`}
@@ -57,7 +54,7 @@ function FloatingCode() {
           position={[-3.5, -2.5, -3]}
           fontSize={1.5}
           color="#818cf8"
-          fillOpacity={0.9}
+          fillOpacity={0.8}
           rotation={[0, 0.4, 0]}
         >
           {`</>`}
@@ -67,31 +64,40 @@ function FloatingCode() {
   );
 }
 
-function DeveloperShapes() {
-  return (
-    <>
-      <ServerContainer />
-      <DatabaseStack />
-      <FloatingCode />
-    </>
-  );
-}
-
 export default function Scene() {
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, pointerEvents: 'none', background: 'radial-gradient(circle at center, #0f172a 0%, #020617 100%)' }}>
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: -1,
+        pointerEvents: 'none',
+        background: 'radial-gradient(ellipse at 30% 20%, #0c1030 0%, #060918 60%, #020408 100%)'
+      }}
+      aria-hidden="true"
+    >
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 2]}>
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 10, 10]} intensity={1.5} color="#38bdf8" />
-        <pointLight position={[-10, -10, -10]} intensity={1} color="#818cf8" />
-        
-        {/* Subtle tech particle network / space */}
+        <ambientLight intensity={0.35} />
+        <pointLight position={[10, 10, 10]} intensity={1.5} color="#22d3ee" />
+        <pointLight position={[-10, -10, -10]} intensity={0.8} color="#a78bfa" />
         <Stars radius={100} depth={50} count={3000} factor={3} saturation={0} fade speed={1} />
-        
-        <DeveloperShapes />
+        <ServerContainer />
+        <DatabaseStack />
+        <FloatingCode />
       </Canvas>
-      {/* Dark overlay to ensure foreground HTML text remains highly legible against the bright 3D models */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(2, 6, 23, 0.4)' }} />
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(6, 9, 24, 0.35)'
+        }}
+      />
     </div>
   );
 }
