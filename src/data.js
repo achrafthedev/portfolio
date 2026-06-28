@@ -13,7 +13,7 @@ export const translations = {
     stats_experience: "Years Experience",
     stats_level: "Leadership Level",
     skills_title: "Technical Expertise",
-    skills_desc: "A broad and deep toolkit built across 13+ production projects.",
+    skills_desc: "A broad and deep toolkit built across 14+ production projects.",
     education_title: "Education & Certifications",
     education_desc: "Academic background and official degrees from HETIC, a leading French tech school.",
     status_preparing: "In Progress",
@@ -66,9 +66,9 @@ export const translations = {
 };
 
 export const stats = [
-  { value: '13+', key: 'stats_projects' },
+  { value: '114+', key: 'stats_projects' },
   { value: '15+', key: 'stats_technologies' },
-  { value: '3+', key: 'stats_experience' },
+  { value: '5+', key: 'stats_experience' },
   { value: 'CTO', key: 'stats_level' },
 ];
 
@@ -122,6 +122,19 @@ export const categoryMeta = {
 };
 
 export const projects = [
+  {
+    id: 'interval',
+    title: 'Interval',
+    category: 'frontend',
+    role_en: 'Creator & Developer',
+    role_fr: 'Créateur & Développeur',
+    desc_en: 'Premium open-source PWA combining clock, alarm, timer & stopwatch. Features synthesized Web Audio tones, Picture-in-Picture, geolocation world clock, sequence builder, and full offline support via Service Worker.',
+    desc_fr: 'PWA open-source premium combinant horloge, alarme, minuteur et chronomètre. Intègre des sons synthétisés via Web Audio, Picture-in-Picture, horloge mondiale par géolocalisation, enchaînement de minuteurs et support hors-ligne complet.',
+    tags: ['React 19', 'TypeScript', 'Tailwind CSS', 'PWA'],
+    link: 'https://achrafthedev.github.io/Interval',
+    repo: 'https://github.com/achrafthedev/Interval',
+    isPublic: true
+  },
   {
     id: 'bitora',
     title: 'Bitora',
