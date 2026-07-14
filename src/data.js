@@ -229,14 +229,15 @@ export const projects = [
   },
   {
     id: 'dach',
-    title: 'DachRentCar',
+    title: 'DACH Rent Car',
     category: 'fullstack',
     role_en: 'Full-Stack Engineer',
     role_fr: 'Ingénieur Full-Stack',
-    desc_en: 'Design of a fleet management system and customer portal automating the car rental process, featuring RBAC and dynamic reporting.',
-    desc_fr: 'Conception d’un système de gestion de flotte et d’un portail client automatisant le processus de location. Inclus un système de rôles RBAC et génération de rapports.',
-    tags: ['PHP', 'MySQL', 'Bootstrap 5', 'RBAC'],
-    isPublic: false
+    desc_en: 'Full-stack car rental platform: a customer booking website plus a full back-office (fleet, reservations, contracts, finance, CRM, marketing and multi-partner distribution). Includes ID/passport OCR, NFC card reading, WhatsApp/SMS campaigns, and Stripe/PayPal/local gateway payments.',
+    desc_fr: 'Plateforme de location de voitures full-stack : site de réservation client et back-office complet (flotte, réservations, contrats, finance, CRM, marketing et distribution multi-partenaires). Inclut OCR de pièces d’identité, lecture de cartes NFC, campagnes WhatsApp/SMS et paiements Stripe/PayPal/passerelles locales.',
+    tags: ['React 18', 'Vite', 'Node.js', 'Express', 'MySQL', 'Socket.IO'],
+    link: 'https://dachcar.com/',
+    isPublic: true
   },
   {
     id: 'pfe-autonomous',
