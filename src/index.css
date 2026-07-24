@@ -1,6 +1,29 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Tailwind v4 theme config lives in CSS now (tailwind.config.js is gone) —
+   these map 1:1 to the old theme.extend entries. */
+@theme {
+  --font-sans: Inter, system-ui, sans-serif;
+
+  --color-void-950: #020408;
+  --color-void-900: #060918;
+  --color-void-800: #0c1030;
+  --color-void-700: #12173f;
+
+  --color-neon-cyan: #22d3ee;
+  --color-neon-violet: #a78bfa;
+  --color-neon-indigo: #818cf8;
+  --color-neon-amber: #fbbf24;
+  --color-neon-pink: #f472b6;
+  --color-neon-green: #34d399;
+
+  --shadow-glow: 0 0 40px -8px rgba(34, 211, 238, 0.45);
+  --shadow-glow-violet: 0 0 40px -8px rgba(167, 139, 250, 0.45);
+
+  --background-image-radial-fade: radial-gradient(ellipse at 30% 20%, #0c1030 0%, #060918 60%, #020408 100%);
+
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
 * {
   box-sizing: border-box;

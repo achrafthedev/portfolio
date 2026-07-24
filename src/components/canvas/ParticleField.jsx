@@ -1,7 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Stars } from '@react-three/drei';
-import * as THREE from 'three';
 import { useUIStore } from '../../store/uiStore';
 
 const DESKTOP_COUNT = 1800;
