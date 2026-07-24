@@ -25,9 +25,11 @@ Designed and originally built by [Achraf Chardoudi](https://github.com/achrafthe
 ## Quick Start (Local Development)
 
 ### Prerequisites
+
 You can run this project using either **Docker** (recommended) or locally with **Node.js**.
 
 ### Option 1: Using Docker (Recommended)
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/achrafthedev/portfolio.git
@@ -40,6 +42,7 @@ You can run this project using either **Docker** (recommended) or locally with *
 3. Open your browser and navigate to `http://localhost:8080`.
 
 ### Option 2: Using Node.js
+
 1. Install dependencies:
    ```bash
    npm install
@@ -55,6 +58,7 @@ You can run this project using either **Docker** (recommended) or locally with *
 This portfolio is built to be a reusable template. Here is exactly what you need to change to make it yours:
 
 ### 1. Update Profile Information
+
 - Open `src/App.jsx`.
 - Update the name `Achraf Chardoudi` in the Hero section.
 - Update the **contact links** (Email, LinkedIn URL, GitHub URL, Phone number).
@@ -64,6 +68,7 @@ This portfolio is built to be a reusable template. Here is exactly what you need
 - Replace the `public/profile.png` file with your own high-resolution image. Make sure the file name matches or update the `<img>` tag in `src/App.jsx`.
 
 ### 3. Edit Your Content
+
 Open `src/data.js` and customize these exports:
 
 - **`translations`** — Modify hero title (`hero_role`, `hero_subtitle`), introduction (`hero_desc`), and footer CTA text in both English and French.
@@ -106,15 +111,15 @@ Deployment is completely automated. To publish your portfolio online for free:
 
 ## Tech Stack
 
-| Layer | Technologies |
-| ----- | ------------ |
-| Framework | React 18, Vite 5 |
-| 3D | Three.js, React Three Fiber, Drei |
-| Animation | Framer Motion |
-| Icons | Lucide React |
-| Styling | CSS3 (Custom Properties, Glassmorphism, Grid) |
-| Font | Inter (Google Fonts) |
-| Deployment | Docker (Nginx), GitHub Actions, GitHub Pages |
+| Layer      | Technologies                                  |
+| ---------- | --------------------------------------------- |
+| Framework  | React 18, Vite 5                              |
+| 3D         | Three.js, React Three Fiber, Drei             |
+| Animation  | Framer Motion                                 |
+| Icons      | Lucide React                                  |
+| Styling    | CSS3 (Custom Properties, Glassmorphism, Grid) |
+| Font       | Inter (Google Fonts)                          |
+| Deployment | Docker (Nginx), GitHub Actions, GitHub Pages  |
 
 ## License
 
