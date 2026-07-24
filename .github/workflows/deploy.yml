@@ -1,9 +1,16 @@
 name: Deploy to GitHub Pages
 
+# Publishes two sites from one workflow:
+#   - `main` (this branch) is the legacy 2D portfolio -> served at /
+#   - `3d`   (the active rebuild) -> built and served at /3d/
+# Update production by merging into `main` as usual; the 3D work-in-progress
+# stays on the `3d` branch and is rebuilt automatically on every push to it.
+
 on:
   push:
     branches:
       - main
+      - 3d
   workflow_dispatch:
 
 permissions:
@@ -22,28 +29,50 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout main (legacy production)
         uses: actions/checkout@v7
-      
+        with:
+          ref: main
+          path: legacy
+
+      - name: Checkout 3d (dev)
+        uses: actions/checkout@v7
+        with:
+          ref: 3d
+          path: 3d
+
       - name: Set up Node
         uses: actions/setup-node@v7
         with:
           node-version: 22
-          
-      - name: Install dependencies
-        run: npm install
-        
-      - name: Build
-        run: npm run build -- --base=/portfolio/
-        
+
+      - name: Build legacy site (root)
+        working-directory: legacy
+        run: |
+          npm install
+          npm run build -- --base=/portfolio/
+
+      - name: Build 3D site (/3d)
+        working-directory: 3d
+        run: |
+          npm install
+          npm run build -- --base=/portfolio/3d/
+
+      - name: Combine build output
+        run: |
+          mkdir -p dist
+          cp -r legacy/dist/. dist/
+          mkdir -p dist/3d
+          cp -r 3d/dist/. dist/3d/
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
           path: './dist'
-          
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
