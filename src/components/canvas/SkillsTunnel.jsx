@@ -77,7 +77,11 @@ export default function SkillsTunnel() {
 
   useFrame((state) => {
     const p = scrollState.progress;
-    const visibility = THREE.MathUtils.smoothstep(p, 0.7, 0.82);
+    // Starts at 0.8, after CameraRig's rail dolly has fully returned to
+    // x=0 (t=0.78 — see CameraRig.jsx) so these centered rings don't fade
+    // in while the camera is still off to the side finishing the project
+    // rail pass, which used to push them to the edge of frame.
+    const visibility = THREE.MathUtils.smoothstep(p, 0.8, 0.9);
     group.current.scale.setScalar(Math.max(0.001, visibility));
 
     const glow = 0.6 + Math.sin(state.clock.elapsedTime * 1.5) * 0.2;

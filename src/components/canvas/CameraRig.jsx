@@ -32,6 +32,15 @@ const RAIL_VIEW_Z = RAIL_Z + 7;
 // (RAIL_Z), so the camera just slides from the leftmost to the rightmost
 // card position at a constant viewing depth (RAIL_VIEW_Z), keeping every
 // card the same size and framing throughout instead of swinging past them.
+//
+// The rail dolly has to fully return to x=0 (t=0.78) BEFORE SkillsTunnel
+// starts fading in (see SkillsTunnel.jsx, ramps in at 0.8) — the rings sit
+// centered at x=0, and this used to overlap with the tail end of the rail
+// sweep (camera still out near +/-RAIL_HALF_WIDTH while the tunnel was
+// already becoming visible), which pushed the rings/portal to the edge of
+// frame instead of centered. ProjectGallery's own rampOut (0.58-0.68) also
+// finishes before this return leg starts, so nothing is mid-transition
+// while the camera swings back.
 const DESKTOP_STOPS = [
   { t: 0.0, pos: [0, 0.5, 42], look: [0, 0, 0] },
   { t: 0.12, pos: [0, 0.3, 10], look: [0, 0, 0] },
@@ -39,8 +48,8 @@ const DESKTOP_STOPS = [
   { t: 0.38, pos: [6, 2, 15], look: [4, 0.3, 8.5] },
   { t: 0.5, pos: [0, 1, 6], look: [0, 0.2, RAIL_Z + 2] },
   { t: 0.6, pos: [-RAIL_HALF_WIDTH, 1.4, RAIL_VIEW_Z], look: [-RAIL_HALF_WIDTH, 0, RAIL_Z] },
-  { t: 0.72, pos: [RAIL_HALF_WIDTH, 1.4, RAIL_VIEW_Z], look: [RAIL_HALF_WIDTH, 0, RAIL_Z] },
-  { t: 0.9, pos: [0, 0.3, -16], look: [0, 0, -26] },
+  { t: 0.68, pos: [RAIL_HALF_WIDTH, 1.4, RAIL_VIEW_Z], look: [RAIL_HALF_WIDTH, 0, RAIL_Z] },
+  { t: 0.78, pos: [0, 0.3, -16], look: [0, 0, -26] },
   { t: 1.0, pos: [0, 0, -27], look: [0, 0, -38] },
 ];
 
@@ -105,7 +114,18 @@ export default function CameraRig() {
     // Click-to-focus: blend toward the active project node instead of the
     // scroll path while a project modal is open OR the 2D carousel
     // (ProjectsOverlay) is browsing a specific project.
-    const activeProjectId = openProjectId || focusedProjectId;
+    //
+    // ProjectsOverlay sets focusedProjectId as soon as IT mounts, which is
+    // as soon as the page loads — it's a permanently-rendered section, not
+    // something that mounts only once scrolled into view. Without gating
+    // on scroll position too, that pulled the camera toward project 0 for
+    // the entire session (drowning out the hero/experience/skills phases
+    // almost immediately after load, which is what made Core/ExperienceOrbs
+    // look "invisible" and made a single project card loom in every shot).
+    // openProjectId (an actual modal click) has no such always-on source,
+    // so it stays ungated.
+    const inProjectPhase = scrollState.progress >= 0.42 && scrollState.progress <= 0.7;
+    const activeProjectId = openProjectId || (inProjectPhase ? focusedProjectId : null);
     const targetBlend = activeProjectId ? 1 : 0;
     focusBlend.current = THREE.MathUtils.damp(focusBlend.current, targetBlend, 4, delta);
 

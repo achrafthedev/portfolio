@@ -16,12 +16,11 @@ export default function ProjectGallery() {
 
   useFrame(() => {
     const p = scrollState.progress;
-    // rampOut finishes by 0.72, well before SkillsTunnel ramps in at
-    // 0.7-0.82 (see SkillsTunnel.jsx) — they used to both be fully visible
-    // across a wide 0.7-0.85 window, so titles and tunnel labels rendered
-    // on top of each other.
+    // rampOut finishes by 0.68, matching CameraRig's rail dolly (see
+    // CameraRig.jsx) which also leaves the rail by t=0.68 — and well
+    // before SkillsTunnel ramps in at 0.8-0.9 (see SkillsTunnel.jsx).
     const rampIn = THREE.MathUtils.smoothstep(p, 0.38, 0.5);
-    const rampOut = 1 - THREE.MathUtils.smoothstep(p, 0.62, 0.72);
+    const rampOut = 1 - THREE.MathUtils.smoothstep(p, 0.58, 0.68);
     group.current.scale.setScalar(Math.max(0.001, rampIn * rampOut));
   });
 
