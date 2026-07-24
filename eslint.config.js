@@ -7,7 +7,10 @@ import globals from 'globals';
 // ESLint 9 requires flat config — this repo never had an .eslintrc, so
 // `npm run lint` was silently broken before this file existed.
 export default [
-  { ignores: ['dist', 'node_modules'] },
+  // '.claude' excludes sibling git worktrees checked out under this repo's
+  // root (e.g. .claude/worktrees/*) — without it, flat config's default
+  // traversal happily lints whatever unrelated project lives in there too.
+  { ignores: ['dist', 'node_modules', '.claude'] },
   js.configs.recommended,
   {
     files: ['**/*.{js,jsx}'],
