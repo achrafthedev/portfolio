@@ -15,6 +15,6 @@ jobs:
       - name: Run Prettier
         run: npx --yes prettier --write . --ignore-unknown
       - name: Commit formatting changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "style: auto-format with Prettier [skip ci]"
