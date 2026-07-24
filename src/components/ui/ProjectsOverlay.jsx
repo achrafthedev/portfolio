@@ -5,15 +5,19 @@ import { projects, categoryMeta } from '../../data';
 import { useUIStore } from '../../store/uiStore';
 
 // A one-at-a-time carousel instead of a scrolling grid — browsing stays a
-// deliberate, paused action (click Prev/Next or a dot) rather than
-// something you have to keep scrolling past. Setting focusedProjectId as
-// you browse also steers the 3D camera toward whichever card is active
-// (see CameraRig.jsx), so the decorative 3D gallery visually follows along.
+// deliberate, paused action (drag with the mouse, or Prev/Next/a dot)
+// rather than something you have to keep scrolling past. Setting
+// focusedProjectId as you browse also steers the 3D camera toward
+// whichever card is active (see CameraRig.jsx), so the decorative 3D
+// gallery visually follows along.
 const cardVariants = {
-  enter: (direction) => ({ opacity: 0, x: direction > 0 ? 40 : -40 }),
+  enter: (direction) => ({ opacity: 0, x: direction > 0 ? 60 : -60 }),
   center: { opacity: 1, x: 0 },
-  exit: (direction) => ({ opacity: 0, x: direction > 0 ? -40 : 40 }),
+  exit: (direction) => ({ opacity: 0, x: direction > 0 ? -60 : 60 }),
 };
+
+const DRAG_DISTANCE_THRESHOLD = 90;
+const DRAG_VELOCITY_THRESHOLD = 400;
 
 export default function ProjectsOverlay({ t, lang }) {
   const [index, setIndex] = useState(0);
@@ -66,8 +70,25 @@ export default function ProjectsOverlay({ t, lang }) {
               animate="center"
               exit="exit"
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="glass-panel flex flex-col p-6"
-              style={{ boxShadow: `0 0 40px -14px ${meta.color}66` }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.6}
+              whileDrag={{ cursor: 'grabbing', scale: 0.98 }}
+              onDragEnd={(_, info) => {
+                if (
+                  info.offset.x < -DRAG_DISTANCE_THRESHOLD ||
+                  info.velocity.x < -DRAG_VELOCITY_THRESHOLD
+                ) {
+                  go(1);
+                } else if (
+                  info.offset.x > DRAG_DISTANCE_THRESHOLD ||
+                  info.velocity.x > DRAG_VELOCITY_THRESHOLD
+                ) {
+                  go(-1);
+                }
+              }}
+              className="glass-panel flex cursor-grab flex-col p-6 active:cursor-grabbing"
+              style={{ boxShadow: `0 0 40px -14px ${meta.color}66`, touchAction: 'pan-y' }}
             >
               <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: meta.color }}>
                 {lang === 'fr' ? meta.fr : meta.en}
