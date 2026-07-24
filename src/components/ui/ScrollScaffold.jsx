@@ -1,4 +1,5 @@
-import { projects, diplomas, skillCategories, stats } from '../../data';
+import { diplomas, skillCategories, stats } from '../../data';
+import ProjectsOverlay from './ProjectsOverlay';
 
 // The 3D canvas (see components/canvas/*) is the visual content now — hero
 // copy, career stats/diplomas, project cards and skills are all rendered as
@@ -64,24 +65,13 @@ export default function ScrollScaffold({ t, lang }) {
         </div>
       </section>
 
+      {/* Real, visible, readable project cards (see ProjectsOverlay.jsx) —
+          the 3D gallery cards behind this section are decorative/ambient
+          only now, after three rounds of testing never got baked-on card
+          text to a reliably legible state on tilted, orbiting geometry. */}
       <section id="projects" className="min-h-[180vh]">
         <PhaseKicker index="03" label={t.nav_projects} />
-        <div className="sr-only">
-          <h2>{t.projects_title}</h2>
-          <p>{t.projects_desc}</p>
-          <ul>
-            {projects.map((p) => (
-              <li key={p.id}>
-                <h3>{p.title}</h3>
-                <p>{lang === 'fr' ? p.role_fr : p.role_en}</p>
-                <p>{lang === 'fr' ? p.desc_fr : p.desc_en}</p>
-                <p>{p.tags.join(', ')}</p>
-                {p.isPublic && p.link && <a href={p.link}>{t.view_project}</a>}
-                {p.repo && <a href={p.repo}>{t.github_repo}</a>}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ProjectsOverlay t={t} lang={lang} />
       </section>
 
       <section id="skills" className="min-h-[120vh]">
