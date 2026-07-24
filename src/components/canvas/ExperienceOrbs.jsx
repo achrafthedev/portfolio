@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { scrollState } from '../../store/scrollState';
 import { useUIStore } from '../../store/uiStore';
 import { stats, diplomas, translations } from '../../data';
+import { FONT_BOLD, FONT_SEMIBOLD } from '../../utils/fonts';
 
 const ORB_COLORS = ['#22d3ee', '#a78bfa', '#34d399', '#fbbf24', '#f472b6', '#818cf8'];
 
@@ -55,6 +56,7 @@ function Orb({ node, index, total }) {
         </mesh>
         <Billboard position={[0, -1, 0]}>
           <Text
+            font={FONT_BOLD}
             fontSize={isDiploma ? 0.22 : 0.34}
             color="white"
             anchorX="center"
@@ -66,6 +68,7 @@ function Orb({ node, index, total }) {
             {node.value}
           </Text>
           <Text
+            font={FONT_SEMIBOLD}
             position={[0, isDiploma ? -0.65 : -0.45, 0]}
             fontSize={0.15}
             color={color}

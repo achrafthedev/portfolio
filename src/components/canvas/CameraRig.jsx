@@ -16,22 +16,31 @@ import { projects } from '../../data';
 // Phase 2  Experience & Career        0.20 -> 0.50
 // Phase 3  Featured Projects Gallery  0.50 -> 0.80
 // Phase 4  Skills & Contact tunnel    0.80 -> 1.00
+// ExperienceOrbs (src/components/canvas/ExperienceOrbs.jsx) places its
+// nodes at x in [-7, 7], z in [7, 10]. The waypoints below deliberately
+// keep the camera further back than that z-range (z >= 13) with `look`
+// pointed AT that cluster (z ~8.5) for the whole 0.22 -> 0.5 span — an
+// earlier version had the camera at nearly the same depth as the orbs
+// while looking straight past them, which pushed them out of frame for
+// most of the phase.
 const DESKTOP_STOPS = [
   { t: 0.0, pos: [0, 0.5, 42], look: [0, 0, 0] },
-  { t: 0.2, pos: [0, 0.2, 11], look: [0, 0, -1] },
-  { t: 0.35, pos: [3.5, 1.2, 8.5], look: [1, 0, -3] },
-  { t: 0.5, pos: [-3.5, -0.6, 7], look: [-1, -0.5, -5] },
+  { t: 0.12, pos: [0, 0.3, 10], look: [0, 0, 0] },
+  { t: 0.25, pos: [0, 1.5, 17], look: [0, 0.3, 8.5] },
+  { t: 0.38, pos: [6, 2, 15], look: [4, 0.3, 8.5] },
+  { t: 0.5, pos: [2, 1, 10], look: [-1, 0, 3] },
   { t: 0.65, pos: [9, 1.5, -3], look: [0, 0, -8] },
   { t: 0.8, pos: [-9, 0.8, -4], look: [0, 0, -8] },
   { t: 0.9, pos: [0, 0.3, -16], look: [0, 0, -26] },
   { t: 1.0, pos: [0, 0, -27], look: [0, 0, -38] },
 ];
 
-// Mobile: flattened linear z-axis zoom only, per the perf fallback spec.
+// Mobile: flattened linear z-axis zoom only, per the perf fallback spec —
+// still kept behind the orb cluster's z-range so it stays in frame.
 const MOBILE_STOPS = [
   { t: 0.0, pos: [0, 0, 40], look: [0, 0, 0] },
-  { t: 0.2, pos: [0, 0, 12], look: [0, 0, -2] },
-  { t: 0.5, pos: [0, 0, 2], look: [0, 0, -8] },
+  { t: 0.2, pos: [0, 0, 15], look: [0, 0, 8] },
+  { t: 0.5, pos: [0, 0, 10], look: [0, 0, -6] },
   { t: 0.8, pos: [0, 0, -8], look: [0, 0, -18] },
   { t: 1.0, pos: [0, 0, -27], look: [0, 0, -38] },
 ];
