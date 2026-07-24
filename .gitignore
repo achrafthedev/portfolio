@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 /.claude
+
+# Local reference copy of portfolio content — not meant for the public repo
+/docs
