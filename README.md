@@ -1,24 +1,57 @@
-# Premium React Portfolio Template
+# Immersive 3D React Portfolio Template
 
-A modern, highly-customizable, Dockerized React portfolio featuring a premium dark-mode **glassmorphism UI**, immersive **Three.js 3D background**, micro-animations, automatic English/French **internationalization**, full **SEO optimization** with JSON-LD structured data, and out-of-the-box **GitHub Actions CI/CD** for GitHub Pages.
+A fully immersive, scroll-driven **3D portfolio** built with React Three Fiber. Instead of a flat page with a decorative WebGL background, the content itself — hero copy, career timeline, project cards, skills — lives *inside* the 3D scene. A GSAP `ScrollTrigger`-powered camera rig flies through four cinematic phases as you scroll, with bloom/vignette postprocessing, an instanced particle field, automatic English/French **internationalization**, full **SEO optimization** with JSON-LD structured data, and out-of-the-box **GitHub Actions CI/CD** for GitHub Pages.
 
 Designed and originally built by [Achraf Chardoudi](https://github.com/achrafthedev). Feel free to fork and use this as a base for your own engineering portfolio!
 
 ## Features
 
-- **Premium Dark UI:** Glassmorphism cards, gradient accents (cyan/purple/emerald), smooth hover effects, and staggered scroll-reveal animations via Framer Motion.
-- **3D Background:** Animated Three.js scene with floating code symbols, server containers, database stacks, and a star particle field.
-- **Stats Bar:** Key metrics section (projects delivered, technologies, experience, leadership level) with gradient counters.
-- **Skills Section:** Categorized technical expertise cards (Frontend, Backend, Cloud & DevOps, Data & AI, Architecture) with color-coded borders and interactive tags.
-- **Project Cards:** Category-labeled cards with color-coded top borders, tech badges, and action links (live site, source code, or private indicator).
-- **Education & Certifications:** Diploma cards with status badges (Obtained/In Progress) and RNCP verification links.
-- **Auto-Localization (i18n):** Automatically detects the user's browser language. Defaults to French for Francophone countries, and English for the rest of the world. Includes a manual toggle.
+- **Scroll-Driven 3D Camera:** A GSAP `ScrollTrigger` camera rig (`CameraRig.jsx`) travels through four phases as the page scrolls — hero entrance, career/experience timeline, orbiting project gallery, and a skills tunnel toward a contact "portal" — with mouse parallax and click-to-focus on project nodes.
+- **Content Lives in 3D, Not Just the Background:** Hero name/role/description, career stats, diplomas, skill lists and project details are all rendered as real 3D text and meshes inside the canvas (see `src/components/canvas/`), not as HTML sections laid over a decorative scene.
+- **Interactive Project Nodes:** Floating 3D cards that tilt toward the cursor on hover, glow on rim-light, and open a glassmorphic detail modal on click — camera smoothly focuses on the clicked node.
+- **Postprocessing Pipeline:** Bloom, Vignette and Chromatic Aberration via `@react-three/postprocessing`, automatically disabled on mobile for performance.
+- **Instanced Particle Field:** Drifting dust + starfield spanning the full camera path.
+- **Accessible & Crawlable by Design:** A slim `sr-only` scroll scaffold (`ScrollScaffold.jsx`) exposes the exact same content as real, semantic HTML for screen readers, SEO crawlers and no-JS fallback — nothing is lost by moving the visuals into WebGL.
+- **Auto-Localization (i18n):** Automatically detects the user's browser language. Defaults to French for Francophone countries, and English for the rest of the world. Includes a manual toggle, wired through a shared `zustand` store so 3D components can read the active language directly.
 - **Full SEO:** JSON-LD structured data (Person + WebSite schemas), Open Graph tags, Twitter Cards, canonical URL, hreflang tags, robots meta, `<noscript>` fallback content, dynamic `lang` attribute, and semantic HTML (`<main>`, `<article>`, `<nav>`, `aria-label`).
-- **Fixed Navigation:** Glassmorphic nav bar with backdrop blur, smooth scroll links, and underline hover animations.
-- **Footer CTA:** Call-to-action section with email button and social links.
-- **Data-Driven:** All content (projects, skills, stats, diplomas, translations) is centralized in a single `data.js` file for easy editing.
+- **Compact Contact Dock:** A small, always-visible floating CTA + social links instead of a full-width footer section.
+- **Data-Driven:** All content (projects, skills, stats, diplomas, translations) is centralized in a single `data.js` file — edit it once and it updates both the 3D scene and the accessible scaffold.
+- **Mobile Performance Fallback:** Below 768px, the camera path flattens to a linear zoom, particle count drops ~60%, and postprocessing is disabled entirely.
 - **Dockerized:** Multi-stage `Dockerfile` and `docker-compose.yml` for instant, consistent local deployment via Nginx.
 - **Zero-Config Deployment:** GitHub Actions pipeline that automatically builds and deploys to GitHub Pages on push to `main`.
+
+## Architecture
+
+```
+src/
+  components/
+    canvas/          # Everything rendered inside the <Canvas> — the actual content
+      Scene.jsx          # Canvas wrapper, lighting, mouse-follow light
+      CameraRig.jsx       # GSAP ScrollTrigger camera path (4 phases)
+      Core.jsx             # Glowing hero core (distort material)
+      HeroText3D.jsx        # Hero name/role/description as billboarded 3D text
+      ExperienceOrbs.jsx     # Career timeline: stats + diplomas as 3D nodes
+      ProjectGallery.jsx      # Arranges project cards along the gallery arc
+      ProjectNode.jsx           # A single interactive 3D project card
+      SkillsTunnel.jsx            # Skill-category rings with orbiting skill text
+      ParticleField.jsx            # Drifting dust + stars
+      PostFX.jsx                    # Bloom / Vignette / Chromatic Aberration
+    ui/              # Minimal 2D chrome layered over the canvas
+      Navbar.jsx
+      ScrollScaffold.jsx  # sr-only content + scroll-height spacer sections
+      ProjectModal.jsx    # Glassmorphic project detail modal
+      ContactDock.jsx      # Floating contact CTA + socials
+  hooks/
+    useScrollProgress.js  # Registers the GSAP ScrollTrigger driving scrollState
+    useResponsive.js       # Tracks mobile breakpoint into uiStore
+    useCardTexture.js       # Generates each project card's canvas texture
+  store/
+    scrollState.js   # High-frequency scroll progress (plain ref, not React state)
+    uiStore.js         # zustand store: lang, isMobile, open project modal
+  utils/
+    projectLayout.js  # Shared position math for project nodes (gallery + camera focus)
+  data.js            # All portfolio content — the single source of truth
+```
 
 ## Quick Start (Local Development)
 
@@ -50,23 +83,15 @@ You can run this project using either **Docker** (recommended) or locally with *
 
 ## Customization Guide (Use it as your own!)
 
-This portfolio is built to be a reusable template. Here is exactly what you need to change to make it yours:
+This portfolio is built to be a reusable template. Everything you need to change lives in one of three places: `data.js` (content), `index.html` (SEO), or the `canvas`/`ui` components (visuals/layout).
 
-### 1. Update Profile Information
-- Open `src/App.jsx`.
-- Update the name `Achraf Chardoudi` in the Hero section.
-- Update the **contact links** (Email, LinkedIn URL, GitHub URL, Phone number).
+### 1. Edit Your Content
 
-### 2. Replace the Profile Picture
+Open `src/data.js` and customize these exports — this single file drives both the 3D scene and the accessible `sr-only` scaffold:
 
-- Replace the `public/profile.png` file with your own high-resolution image. Make sure the file name matches or update the `<img>` tag in `src/App.jsx`.
-
-### 3. Edit Your Content
-Open `src/data.js` and customize these exports:
-
-- **`translations`** — Modify hero title (`hero_role`, `hero_subtitle`), introduction (`hero_desc`), and footer CTA text in both English and French.
-- **`stats`** — Update the key metrics (projects count, technologies, experience years, leadership level).
-- **`skillCategories`** — Edit the 5 skill category cards. Each has a `title_en`, `title_fr`, `color`, and `skills` array.
+- **`translations`** — Hero name is set directly in `HeroText3D.jsx`; role/subtitle/description, footer/contact CTA text, and all UI labels live here for both English and French.
+- **`stats`** — Key metrics shown as 3D nodes on the career timeline (projects count, technologies, experience years, leadership level).
+- **`skillCategories`** — Skill-category rings in the tunnel phase. Each has a `title_en`, `title_fr`, `color`, and `skills` array.
 - **`projects`** — Each project object requires:
   - `title`, `category`, `role_en`, `role_fr`, `desc_en`, `desc_fr`
   - `tags` (Array of strings like `['React', 'Node.js']`)
@@ -74,8 +99,16 @@ Open `src/data.js` and customize these exports:
   - `link` (Optional: live URL, requires `isPublic: true`)
   - `repo` (Optional: GitHub repository URL)
   - `isPublic` (Boolean: if false and no repo, shows a "Private Source" badge)
-- **`categoryMeta`** — Colors and labels for each project category.
+- **`categoryMeta`** — Colors and labels for each project category (also used for each 3D card's rim-light and texture accent color).
 - **`diplomas`** — Education entries with status, RNCP and LinkedIn verification links.
+
+### 2. Update Profile Information
+
+- Open `src/components/canvas/HeroText3D.jsx` to change the name rendered in 3D, and `src/components/ui/ContactDock.jsx` / `Navbar.jsx` for contact links (Email, LinkedIn URL, GitHub URL).
+
+### 3. Add Real Project Screenshots
+
+By default, project cards use a canvas-generated texture (title, role, description, tags) since no screenshot assets are bundled. To use real screenshots, drop an image in `public/projects/<id>.jpg` and swap `useCardTexture` for `useTexture(...)` in `src/components/canvas/ProjectNode.jsx` — see the comment at the top of `src/hooks/useCardTexture.js` for the exact swap point.
 
 ### 4. Update SEO
 
@@ -108,9 +141,11 @@ Deployment is completely automated. To publish your portfolio online for free:
 | ----- | ------------ |
 | Framework | React 18, Vite 5 |
 | 3D | Three.js, React Three Fiber, Drei |
-| Animation | Framer Motion |
+| Camera & Scroll | GSAP + ScrollTrigger |
+| Postprocessing | `@react-three/postprocessing` (Bloom, Vignette, Chromatic Aberration) |
+| State | Zustand (cross-layer UI state), plain refs for per-frame scroll progress |
+| 2D Overlay | Tailwind CSS, Framer Motion |
 | Icons | Lucide React |
-| Styling | CSS3 (Custom Properties, Glassmorphism, Grid) |
 | Font | Inter (Google Fonts) |
 | Deployment | Docker (Nginx), GitHub Actions, GitHub Pages |
 
