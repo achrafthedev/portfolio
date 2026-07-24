@@ -7,11 +7,21 @@ import { useUIStore } from '../../store/uiStore';
 import { skillCategories } from '../../data';
 import { FONT_SEMIBOLD, FONT_REGULAR } from '../../utils/fonts';
 
-function Ring({ category, index, lang }) {
+// Shared depth-based gradient (cyan -> indigo) instead of each ring taking
+// on its category's own saturated color — five categories at five full
+// hues read as a carnival tunnel; one gradient reads as a single
+// engineered corridor. Category color survives only as a small title accent.
+const GRADIENT_FROM = new THREE.Color('#22d3ee');
+const GRADIENT_TO = new THREE.Color('#818cf8');
+
+function Ring({ category, index, total, lang }) {
   const ref = useRef();
   const z = -14 - index * 5;
   const ringRadius = 3.4 - index * 0.15;
   const title = lang === 'fr' ? category.title_fr : category.title_en;
+  const ringColor = GRADIENT_FROM.clone()
+    .lerp(GRADIENT_TO, total > 1 ? index / (total - 1) : 0)
+    .getStyle();
 
   useFrame((state) => {
     ref.current.rotation.z = state.clock.elapsedTime * 0.15 * (index % 2 === 0 ? 1 : -1);
@@ -22,11 +32,11 @@ function Ring({ category, index, lang }) {
       <mesh ref={ref}>
         <torusGeometry args={[ringRadius, 0.05, 16, 64]} />
         <meshStandardMaterial
-          color={category.color}
-          emissive={category.color}
-          emissiveIntensity={1}
+          color={ringColor}
+          emissive={ringColor}
+          emissiveIntensity={0.9}
           transparent
-          opacity={0.7}
+          opacity={0.6}
         />
       </mesh>
 
@@ -36,23 +46,28 @@ function Ring({ category, index, lang }) {
         </Text>
       </Billboard>
 
-      {/* individual skill words orbiting inside the ring */}
-      {category.skills.map((skill, i) => {
-        const angle = (i / category.skills.length) * Math.PI * 2;
-        const r = ringRadius * 0.62;
-        return (
-          <Billboard key={skill} position={[Math.cos(angle) * r, Math.sin(angle) * r, 0.3]}>
-            <Text font={FONT_REGULAR} fontSize={0.16} color="#e2e8f0" anchorX="center" anchorY="middle">
-              {skill}
-            </Text>
-          </Billboard>
-        );
-      })}
+      {/* Skill list as one calm, centered block instead of scattered words
+          orbiting the ring interior — ambient set-dressing, not a reading
+          task, so it stays legible without competing for attention. */}
+      <Billboard position={[0, 0, 0.3]}>
+        <Text
+          font={FONT_REGULAR}
+          fontSize={0.16}
+          color="#e2e8f0"
+          anchorX="center"
+          anchorY="middle"
+          maxWidth={ringRadius * 1.3}
+          textAlign="center"
+          lineHeight={1.7}
+        >
+          {category.skills.join('   ·   ')}
+        </Text>
+      </Billboard>
     </group>
   );
 }
 
-// Phase 4 (80% -> 100% scroll): a deep tunnel of glowing skill rings —
+// Phase 4 (80% -> 100% scroll): a deep corridor of glowing skill rings —
 // each carrying its real category title and skill list as 3D text — that
 // the camera dives through toward a bright contact "portal" plane.
 export default function SkillsTunnel() {
@@ -72,7 +87,7 @@ export default function SkillsTunnel() {
   return (
     <group ref={group}>
       {skillCategories.map((cat, i) => (
-        <Ring key={cat.id} category={cat} index={i} lang={lang} />
+        <Ring key={cat.id} category={cat} index={i} total={skillCategories.length} lang={lang} />
       ))}
       <mesh ref={portal} position={[0, 0, -14 - skillCategories.length * 5 - 6]}>
         <circleGeometry args={[4, 48]} />

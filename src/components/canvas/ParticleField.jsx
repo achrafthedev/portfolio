@@ -38,7 +38,7 @@ function DriftingDust({ count }) {
       </bufferGeometry>
       <pointsMaterial
         size={0.05}
-        color="#a78bfa"
+        color="#818cf8"
         transparent
         opacity={0.55}
         sizeAttenuation

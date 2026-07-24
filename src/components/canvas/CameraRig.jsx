@@ -4,8 +4,11 @@ import * as THREE from 'three';
 import { useScrollProgress } from '../../hooks/useScrollProgress';
 import { scrollState } from '../../store/scrollState';
 import { useUIStore } from '../../store/uiStore';
-import { getProjectPosition } from '../../utils/projectLayout';
+import { getProjectPosition, getRailHalfWidth, RAIL_Z } from '../../utils/projectLayout';
 import { projects } from '../../data';
+
+const RAIL_HALF_WIDTH = getRailHalfWidth(projects.length);
+const RAIL_VIEW_Z = RAIL_Z + 7;
 
 // Scroll-mapped camera keyframes. Each stop is { t, pos, look } where t is
 // the normalized scroll progress (0-1) at which the camera should be at
@@ -14,7 +17,7 @@ import { projects } from '../../data';
 //
 // Phase 1  Hero / Entrance            0.00 -> 0.20
 // Phase 2  Experience & Career        0.20 -> 0.50
-// Phase 3  Featured Projects Gallery  0.50 -> 0.80
+// Phase 3  Featured Projects Rail     0.50 -> 0.80
 // Phase 4  Skills & Contact tunnel    0.80 -> 1.00
 // ExperienceOrbs (src/components/canvas/ExperienceOrbs.jsx) places its
 // nodes at x in [-7, 7], z in [7, 10]. The waypoints below deliberately
@@ -23,19 +26,20 @@ import { projects } from '../../data';
 // earlier version had the camera at nearly the same depth as the orbs
 // while looking straight past them, which pushed them out of frame for
 // most of the phase.
+//
+// Phase 3 now tracks the project rail (projectLayout.js) as a straight
+// lateral dolly rather than an orbit — cards face forward at a fixed z
+// (RAIL_Z), so the camera just slides from the leftmost to the rightmost
+// card position at a constant viewing depth (RAIL_VIEW_Z), keeping every
+// card the same size and framing throughout instead of swinging past them.
 const DESKTOP_STOPS = [
   { t: 0.0, pos: [0, 0.5, 42], look: [0, 0, 0] },
   { t: 0.12, pos: [0, 0.3, 10], look: [0, 0, 0] },
   { t: 0.25, pos: [0, 1.5, 17], look: [0, 0.3, 8.5] },
   { t: 0.38, pos: [6, 2, 15], look: [4, 0.3, 8.5] },
-  { t: 0.5, pos: [2, 1, 10], look: [-1, 0, 3] },
-  // Project gallery (projectLayout.js) spans a ~13-radius arc — the orbit
-  // here is deliberately much wider than that (~20) so the camera views
-  // the gallery from outside the ring instead of skimming through the
-  // same radius band, which used to put cards huge and overlapping in
-  // frame with almost no separation between them.
-  { t: 0.65, pos: [20, 4, -2], look: [4, 0, -10] },
-  { t: 0.8, pos: [-20, 3, -4], look: [-4, 0, -10] },
+  { t: 0.5, pos: [0, 1, 6], look: [0, 0.2, RAIL_Z + 2] },
+  { t: 0.6, pos: [-RAIL_HALF_WIDTH, 1.4, RAIL_VIEW_Z], look: [-RAIL_HALF_WIDTH, 0, RAIL_Z] },
+  { t: 0.72, pos: [RAIL_HALF_WIDTH, 1.4, RAIL_VIEW_Z], look: [RAIL_HALF_WIDTH, 0, RAIL_Z] },
   { t: 0.9, pos: [0, 0.3, -16], look: [0, 0, -26] },
   { t: 1.0, pos: [0, 0, -27], look: [0, 0, -38] },
 ];

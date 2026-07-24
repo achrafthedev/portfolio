@@ -20,7 +20,7 @@ function MouseLight() {
     const target = new THREE.Vector3(pointer.x * 6, pointer.y * 4, camera.position.z - 6);
     light.current.position.lerp(target, 0.08);
   });
-  return <pointLight ref={light} color="#a78bfa" intensity={2.5} distance={14} />;
+  return <pointLight ref={light} color="#818cf8" intensity={2.5} distance={14} />;
 }
 
 function Lighting() {
@@ -33,7 +33,7 @@ function Lighting() {
         castShadow
         shadow-mapSize={[1024, 1024]}
       />
-      <directionalLight position={[-8, -4, -10]} intensity={0.4} color="#818cf8" />
+      <directionalLight position={[-8, -4, -10]} intensity={0.4} color="#6366f1" />
       <MouseLight />
     </>
   );

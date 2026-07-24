@@ -29,13 +29,12 @@ export default function ProjectGallery() {
     <group ref={group}>
       {projects.map((project, i) => {
         const position = getProjectPosition(i, projects.length, _pos.clone());
-        const rotationY = Math.atan2(position.x, position.z + 8) * -1;
         return (
           <ProjectNode
             key={project.id}
             project={project}
             position={position.toArray()}
-            rotationY={rotationY}
+            rotationY={0}
           />
         );
       })}

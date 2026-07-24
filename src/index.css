@@ -70,7 +70,7 @@ h1, h2, h3, h4 {
   background: #060918;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(#22d3ee, #a78bfa);
+  background: linear-gradient(#22d3ee, #818cf8);
   border-radius: 4px;
 }
 

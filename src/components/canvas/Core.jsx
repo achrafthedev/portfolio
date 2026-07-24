@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { MeshDistortMaterial, Float } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { scrollState } from '../../store/scrollState';
 
@@ -9,13 +9,21 @@ import { scrollState } from '../../store/scrollState';
 // risks occluding it — but it still needs to be fully out of the way
 // before ExperienceOrbs (career timeline) ramps in around 12-22% scroll,
 // so it shrinks and drifts up/back out of the camera's sightline early.
+//
+// Built as a nested glass/wireframe structure — a solid faceted inner
+// gem counter-rotating against an outer wireframe shell — instead of a
+// single wobbling MeshDistortMaterial blob, to read as one deliberate
+// engineered object rather than a lava-lamp centerpiece.
 export default function Core() {
   const group = useRef();
-  const mesh = useRef();
+  const inner = useRef();
+  const shell = useRef();
 
   useFrame((state, delta) => {
-    mesh.current.rotation.y += delta * 0.15;
-    mesh.current.rotation.x += delta * 0.06;
+    inner.current.rotation.y += delta * 0.22;
+    inner.current.rotation.x += delta * 0.09;
+    shell.current.rotation.y -= delta * 0.08;
+    shell.current.rotation.z += delta * 0.05;
 
     const p = scrollState.progress;
     const heroFactor = 1 - THREE.MathUtils.smoothstep(p, 0, 0.1);
@@ -29,19 +37,24 @@ export default function Core() {
   });
 
   return (
-    <Float speed={1.4} rotationIntensity={0.3} floatIntensity={0.6}>
+    <Float speed={1.2} rotationIntensity={0.25} floatIntensity={0.5}>
       <group ref={group} position={[0, 0, 0]}>
-        <mesh ref={mesh}>
-          <icosahedronGeometry args={[1.8, 4]} />
-          <MeshDistortMaterial
-            color="#22d3ee"
-            emissive="#0ea5c7"
-            emissiveIntensity={1.1}
-            roughness={0.15}
-            metalness={0.4}
-            distort={0.35}
-            speed={1.6}
+        <mesh ref={inner}>
+          <icosahedronGeometry args={[1.3, 1]} />
+          <meshPhysicalMaterial
+            color="#0e2f38"
+            emissive="#22d3ee"
+            emissiveIntensity={0.9}
+            roughness={0.1}
+            metalness={0.2}
+            transmission={0.55}
+            thickness={1.2}
+            clearcoat={1}
           />
+        </mesh>
+        <mesh ref={shell} scale={1.55}>
+          <icosahedronGeometry args={[1.3, 1]} />
+          <meshBasicMaterial color="#22d3ee" wireframe transparent opacity={0.35} />
         </mesh>
         <pointLight color="#22d3ee" intensity={4} distance={12} />
       </group>
