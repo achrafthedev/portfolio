@@ -3,7 +3,12 @@
 /* Tailwind v4 theme config lives in CSS now (tailwind.config.js is gone) —
    these map 1:1 to the old theme.extend entries. */
 @theme {
-  --font-sans: Inter, system-ui, sans-serif;
+  /* Space Grotesk (display) + DM Sans (body) — the pairing recommended by
+     the UI/UX Pro Max skill's design-system search for a tech/developer
+     portfolio ("tech, startup, modern, innovative, bold, futuristic"),
+     replacing the previous Inter-only setup. */
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
 
   --color-void-950: #020408;
   --color-void-900: #060918;
@@ -17,8 +22,14 @@
   --color-neon-pink: #f472b6;
   --color-neon-green: #34d399;
 
+  /* Status-green accent from the same design-system search — used as the
+     single restrained CTA color per its "Dark Mode (OLED)" style guidance
+     ("minimal glow", not busy multi-color gradients on primary actions). */
+  --color-accent: #22c55e;
+
   --shadow-glow: 0 0 40px -8px rgba(34, 211, 238, 0.45);
   --shadow-glow-violet: 0 0 40px -8px rgba(167, 139, 250, 0.45);
+  --shadow-glow-accent: 0 0 24px -4px rgba(34, 197, 94, 0.5);
 
   --background-image-radial-fade: radial-gradient(ellipse at 30% 20%, #0c1030 0%, #060918 60%, #020408 100%);
 
@@ -35,12 +46,16 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: #020408;
   color: #f1f5f9;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 ::selection {
@@ -72,10 +87,10 @@ canvas {
     @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300;
   }
   .btn-primary {
-    @apply bg-gradient-to-r from-neon-cyan to-neon-indigo text-void-950 shadow-glow hover:scale-105;
+    @apply bg-accent text-void-950 shadow-glow-accent hover:scale-105;
   }
   .btn-outline {
-    @apply border border-white/15 text-slate-200 hover:border-neon-cyan/60 hover:text-neon-cyan;
+    @apply border border-white/15 text-slate-200 hover:border-accent/60 hover:text-accent;
   }
 
   .badge {
@@ -83,10 +98,10 @@ canvas {
   }
 
   .section-label {
-    @apply text-xs font-semibold uppercase tracking-[0.2em] text-neon-cyan;
+    @apply font-display text-xs font-semibold uppercase tracking-[0.2em] text-neon-cyan;
   }
 
   .heading-gradient {
-    @apply bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent;
+    @apply font-display bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent;
   }
 }
