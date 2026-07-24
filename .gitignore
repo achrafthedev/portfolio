@@ -25,4 +25,4 @@ dist-ssr
 /.claude
 
 # Local reference copy of portfolio content — not meant for the public repo
-PORTFOLIO_DATA.md
+/docs
