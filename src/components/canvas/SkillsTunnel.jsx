@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { scrollState } from '../../store/scrollState';
 import { useUIStore } from '../../store/uiStore';
 import { skillCategories } from '../../data';
+import { FONT_SEMIBOLD, FONT_REGULAR } from '../../utils/fonts';
 
 function Ring({ category, index, lang }) {
   const ref = useRef();
@@ -30,7 +31,7 @@ function Ring({ category, index, lang }) {
       </mesh>
 
       <Billboard position={[0, ringRadius + 0.35, 0]}>
-        <Text fontSize={0.4} color={category.color} anchorX="center" anchorY="middle">
+        <Text font={FONT_SEMIBOLD} fontSize={0.4} color={category.color} anchorX="center" anchorY="middle">
           {title}
         </Text>
       </Billboard>
@@ -41,7 +42,7 @@ function Ring({ category, index, lang }) {
         const r = ringRadius * 0.62;
         return (
           <Billboard key={skill} position={[Math.cos(angle) * r, Math.sin(angle) * r, 0.3]}>
-            <Text fontSize={0.16} color="#e2e8f0" anchorX="center" anchorY="middle">
+            <Text font={FONT_REGULAR} fontSize={0.16} color="#e2e8f0" anchorX="center" anchorY="middle">
               {skill}
             </Text>
           </Billboard>

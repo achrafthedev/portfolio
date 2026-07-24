@@ -62,19 +62,24 @@ export default function ProjectNode({ project, position, rotationY = 0 }) {
         <meshBasicMaterial
           color={meta.color}
           transparent
-          opacity={hovered ? 0.55 : 0.2}
+          opacity={hovered ? 0.4 : 0.12}
           blending={THREE.AdditiveBlending}
         />
       </mesh>
 
       <group ref={card} rotation={[0, rotationY, 0]}>
         <RoundedBox args={[3.2, 2, 0.12]} radius={0.08} smoothness={4}>
+          {/* emissiveMap (not a flat emissive color) so only the texture's
+              own bright accents glow — a flat emissive tint here would wash
+              the whole face into a solid color and bury the title/desc/tags
+              drawn onto the texture. */}
           <meshStandardMaterial
             map={texture}
-            emissive={meta.color}
-            emissiveIntensity={hovered ? 0.4 : 0.1}
-            roughness={0.35}
-            metalness={0.2}
+            emissiveMap={texture}
+            emissive="#ffffff"
+            emissiveIntensity={hovered ? 0.35 : 0.08}
+            roughness={0.4}
+            metalness={0.15}
           />
         </RoundedBox>
       </group>

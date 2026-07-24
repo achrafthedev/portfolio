@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { scrollState } from '../../store/scrollState';
 import { useUIStore } from '../../store/uiStore';
 import { translations } from '../../data';
+import { FONT_BOLD, FONT_SEMIBOLD, FONT_REGULAR } from '../../utils/fonts';
 
 // Phase 1 (0 -> ~25% scroll): the hero copy itself, rendered as real 3D text
 // billboarded to face the camera, floating around the glowing Core instead
@@ -24,19 +25,20 @@ export default function HeroText3D() {
   return (
     <group ref={group}>
       <Billboard position={[0, 3.1, 0]}>
-        <Text fontSize={0.85} color="#f1f5f9" font={undefined} anchorX="center" anchorY="middle" letterSpacing={-0.01}>
+        <Text font={FONT_BOLD} fontSize={0.85} color="#f1f5f9" anchorX="center" anchorY="middle" letterSpacing={-0.01}>
           Achraf Chardoudi
         </Text>
       </Billboard>
 
       <Billboard position={[0, 2.05, 0]}>
-        <Text fontSize={0.34} color="#22d3ee" anchorX="center" anchorY="middle" letterSpacing={0.02}>
+        <Text font={FONT_SEMIBOLD} fontSize={0.34} color="#22d3ee" anchorX="center" anchorY="middle" letterSpacing={0.02}>
           {`${t.hero_role}  ·  ${t.hero_subtitle}`}
         </Text>
       </Billboard>
 
       <Billboard position={[0, -2.4, 0]}>
         <Text
+          font={FONT_REGULAR}
           fontSize={0.24}
           color="#94a3b8"
           anchorX="center"
