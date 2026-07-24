@@ -1,24 +1,32 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text, Float } from '@react-three/drei';
+import { Billboard, Text, Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { scrollState } from '../../store/scrollState';
-import { stats, diplomas } from '../../data';
+import { useUIStore } from '../../store/uiStore';
+import { stats, diplomas, translations } from '../../data';
 
 const ORB_COLORS = ['#22d3ee', '#a78bfa', '#34d399', '#fbbf24', '#f472b6', '#818cf8'];
 
 // Phase 2 (20% -> 50% scroll): a lateral spatial timeline built from real
 // career-journey data — the headline stats and the HETIC diplomas — since
 // data.js has no separate "companies" list to invent nodes for.
-const nodes = [
-  ...stats.map((s) => ({ id: s.key, label: s.value, sub: s.key, kind: 'stat' })),
-  ...diplomas.map((d) => ({
-    id: d.id,
-    label: d.school,
-    sub: d.status,
-    kind: 'diploma',
-  })),
-];
+function buildNodes(t, lang) {
+  return [
+    ...stats.map((s) => ({
+      id: s.key,
+      kind: 'stat',
+      value: s.value,
+      caption: t[s.key],
+    })),
+    ...diplomas.map((d) => ({
+      id: d.id,
+      kind: 'diploma',
+      value: lang === 'fr' ? d.title_fr : d.title_en,
+      caption: `${d.school} — ${d.status === 'obtained' ? t.status_obtained : t.status_preparing}`,
+    })),
+  ];
+}
 
 function Orb({ node, index, total }) {
   const ref = useRef();
@@ -26,6 +34,7 @@ function Orb({ node, index, total }) {
   const x = THREE.MathUtils.lerp(-7, 7, total > 1 ? index / (total - 1) : 0.5);
   const y = Math.sin(index * 1.7) * 1.1;
   const z = 8.5 + Math.cos(index * 1.3) * 1.5;
+  const isDiploma = node.kind === 'diploma';
 
   useFrame((state) => {
     ref.current.rotation.y = state.clock.elapsedTime * 0.4 + index;
@@ -44,9 +53,30 @@ function Orb({ node, index, total }) {
             metalness={0.5}
           />
         </mesh>
-        <Text position={[0, -1, 0]} fontSize={0.32} color="white" anchorX="center" anchorY="middle">
-          {node.label}
-        </Text>
+        <Billboard position={[0, -1, 0]}>
+          <Text
+            fontSize={isDiploma ? 0.22 : 0.34}
+            color="white"
+            anchorX="center"
+            anchorY="middle"
+            maxWidth={isDiploma ? 3 : undefined}
+            textAlign="center"
+            lineHeight={1.3}
+          >
+            {node.value}
+          </Text>
+          <Text
+            position={[0, isDiploma ? -0.65 : -0.45, 0]}
+            fontSize={0.15}
+            color={color}
+            anchorX="center"
+            anchorY="middle"
+            maxWidth={3}
+            textAlign="center"
+          >
+            {node.caption}
+          </Text>
+        </Billboard>
       </group>
     </Float>
   );
@@ -54,6 +84,9 @@ function Orb({ node, index, total }) {
 
 export default function ExperienceOrbs() {
   const group = useRef();
+  const lang = useUIStore((s) => s.lang);
+  const t = translations[lang];
+  const nodes = buildNodes(t, lang);
 
   useFrame(() => {
     const p = scrollState.progress;

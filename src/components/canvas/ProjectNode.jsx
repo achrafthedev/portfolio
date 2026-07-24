@@ -20,8 +20,9 @@ export default function ProjectNode({ project, position, rotationY = 0 }) {
   const openProjectId = useUIStore((s) => s.openProjectId);
   const openProject = useUIStore((s) => s.openProject);
 
+  const lang = useUIStore((s) => s.lang);
   const meta = categoryMeta[project.category] || { color: '#22d3ee' };
-  const texture = useCardTexture(project, meta.color);
+  const texture = useCardTexture(project, meta.color, lang);
 
   useFrame((_, delta) => {
     const isOpen = openProjectId === project.id;
