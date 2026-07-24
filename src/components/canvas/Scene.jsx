@@ -3,7 +3,6 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import CameraRig from './CameraRig';
 import Core from './Core';
-import HeroText3D from './HeroText3D';
 import ExperienceOrbs from './ExperienceOrbs';
 import ProjectGallery from './ProjectGallery';
 import SkillsTunnel from './SkillsTunnel';
@@ -59,7 +58,6 @@ export default function Scene() {
         <Suspense fallback={null}>
           <ParticleField />
           <Core />
-          <HeroText3D />
           <ExperienceOrbs />
           <ProjectGallery />
           <SkillsTunnel />

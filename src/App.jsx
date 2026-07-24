@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Scene from './components/canvas/Scene';
 import Navbar from './components/ui/Navbar';
+import HeroOverlay from './components/ui/HeroOverlay';
 import ScrollScaffold from './components/ui/ScrollScaffold';
 import ContactDock from './components/ui/ContactDock';
 import ProjectModal from './components/ui/ProjectModal';
@@ -35,6 +36,7 @@ export default function App() {
           as real objects inside the canvas (see components/canvas/*), not
           drawn as HTML on top of it. CameraRig moves through them on scroll. */}
       <Scene />
+      <HeroOverlay t={t} />
 
       {/* Minimal 2D chrome: navigation + an accessible/SEO text scaffold that
           provides the same content as the 3D scene for screen readers,

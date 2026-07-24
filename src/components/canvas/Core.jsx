@@ -4,13 +4,11 @@ import { MeshDistortMaterial, Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { scrollState } from '../../store/scrollState';
 
-// The glowing central core the camera zooms into during the hero phase
-// (0 -> 20% scroll). It used to linger at world origin at a fixed 0.35
-// scale forever, which put it directly between the camera and the project
-// gallery during phase 3 — a bright, bloomed sphere sitting in front of
-// several cards, occluding their text. It now keeps shrinking and drifts
-// up and back out of the camera's sightline as the hero phase ends, so it
-// never gets in the way of later phases.
+// The glowing central core behind the hero copy (0 -> ~15% scroll). Hero
+// text is a 2D overlay now (see ui/HeroOverlay.jsx), so the core no longer
+// risks occluding it — but it still needs to be fully out of the way
+// before ExperienceOrbs (career timeline) ramps in around 12-22% scroll,
+// so it shrinks and drifts up/back out of the camera's sightline early.
 export default function Core() {
   const group = useRef();
   const mesh = useRef();
@@ -20,16 +18,14 @@ export default function Core() {
     mesh.current.rotation.x += delta * 0.06;
 
     const p = scrollState.progress;
-    // Peak radius (1.8 * 0.85 ≈ 1.5) is kept just under HeroText3D's nearest
-    // billboard at y=2.05 so the core never overlaps the hero copy.
-    const heroFactor = 1 - THREE.MathUtils.smoothstep(p, 0, 0.3);
-    const lingerFactor = 1 - THREE.MathUtils.smoothstep(p, 0.3, 0.5);
-    const scale = THREE.MathUtils.lerp(0.35, 0.85, heroFactor) * THREE.MathUtils.lerp(0.04, 1, lingerFactor);
+    const heroFactor = 1 - THREE.MathUtils.smoothstep(p, 0, 0.1);
+    const lingerFactor = 1 - THREE.MathUtils.smoothstep(p, 0.08, 0.18);
+    const scale = THREE.MathUtils.lerp(0.35, 0.85, heroFactor) * THREE.MathUtils.lerp(0.02, 1, lingerFactor);
     group.current.scale.setScalar(scale);
 
-    const drift = THREE.MathUtils.smoothstep(p, 0.2, 0.5);
-    group.current.position.y = THREE.MathUtils.lerp(0, 6, drift);
-    group.current.position.z = THREE.MathUtils.lerp(0, 6, drift);
+    const drift = THREE.MathUtils.smoothstep(p, 0.06, 0.18);
+    group.current.position.y = THREE.MathUtils.lerp(0, 7, drift);
+    group.current.position.z = THREE.MathUtils.lerp(0, 7, drift);
   });
 
   return (

@@ -1,9 +1,9 @@
-import { EffectComposer, Bloom, Vignette, ChromaticAberration } from '@react-three/postprocessing';
-import { BlendFunction } from 'postprocessing';
-import { Vector2 } from 'three';
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 
 // Disabled entirely on mobile per the perf fallback spec — heavy passes are
-// the first thing to cut for frame budget on weaker GPUs.
+// the first thing to cut for frame budget on weaker GPUs. ChromaticAberration
+// was dropped: it visibly smeared text edges (billboarded titles, orb/ring
+// labels), which matters more here than the stylistic touch was worth.
 export default function PostFX() {
   return (
     <EffectComposer multisampling={0}>
@@ -15,12 +15,6 @@ export default function PostFX() {
         luminanceThreshold={0.35}
         luminanceSmoothing={0.9}
         mipmapBlur
-      />
-      <ChromaticAberration
-        offset={new Vector2(0.0003, 0.0003)}
-        blendFunction={BlendFunction.NORMAL}
-        radialModulation={false}
-        modulationOffset={0}
       />
       <Vignette eskil={false} offset={0.15} darkness={0.9} />
     </EffectComposer>

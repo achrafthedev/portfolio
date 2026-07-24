@@ -29,8 +29,13 @@ const DESKTOP_STOPS = [
   { t: 0.25, pos: [0, 1.5, 17], look: [0, 0.3, 8.5] },
   { t: 0.38, pos: [6, 2, 15], look: [4, 0.3, 8.5] },
   { t: 0.5, pos: [2, 1, 10], look: [-1, 0, 3] },
-  { t: 0.65, pos: [9, 1.5, -3], look: [0, 0, -8] },
-  { t: 0.8, pos: [-9, 0.8, -4], look: [0, 0, -8] },
+  // Project gallery (projectLayout.js) spans a ~13-radius arc — the orbit
+  // here is deliberately much wider than that (~20) so the camera views
+  // the gallery from outside the ring instead of skimming through the
+  // same radius band, which used to put cards huge and overlapping in
+  // frame with almost no separation between them.
+  { t: 0.65, pos: [20, 4, -2], look: [4, 0, -10] },
+  { t: 0.8, pos: [-20, 3, -4], look: [-4, 0, -10] },
   { t: 0.9, pos: [0, 0.3, -16], look: [0, 0, -26] },
   { t: 1.0, pos: [0, 0, -27], look: [0, 0, -38] },
 ];
