@@ -83,6 +83,7 @@ export default function CameraRig() {
   const { camera, pointer } = useThree();
   const isMobile = useUIStore((s) => s.isMobile);
   const openProjectId = useUIStore((s) => s.openProjectId);
+  const focusedProjectId = useUIStore((s) => s.focusedProjectId);
   const focusBlend = useRef(0);
 
   useFrame((_, delta) => {
@@ -97,13 +98,15 @@ export default function CameraRig() {
       _pos.y += pointer.y * 0.35 * fade;
     }
 
-    // Click-to-focus: blend toward the clicked project node instead of the
-    // scroll path while a project modal is open.
-    const targetBlend = openProjectId ? 1 : 0;
+    // Click-to-focus: blend toward the active project node instead of the
+    // scroll path while a project modal is open OR the 2D carousel
+    // (ProjectsOverlay) is browsing a specific project.
+    const activeProjectId = openProjectId || focusedProjectId;
+    const targetBlend = activeProjectId ? 1 : 0;
     focusBlend.current = THREE.MathUtils.damp(focusBlend.current, targetBlend, 4, delta);
 
     if (focusBlend.current > 0.001) {
-      const index = projects.findIndex((p) => p.id === openProjectId);
+      const index = projects.findIndex((p) => p.id === activeProjectId);
       if (index >= 0) {
         getProjectPosition(index, projects.length, _focusPos);
         _focusLook.copy(_focusPos);

@@ -11,10 +11,16 @@ export const useUIStore = create((set) => ({
   isMobile: false,
   setIsMobile: (isMobile) => set({ isMobile }),
 
-  // id of the project currently focused/opened via a 3D node click
+  // id of the project whose full-detail modal is open (3D node click)
   openProjectId: null,
   openProject: (id) => set({ openProjectId: id }),
   closeProject: () => set({ openProjectId: null }),
+
+  // id of the project the 2D carousel (ProjectsOverlay) is currently
+  // showing — separate from openProjectId so browsing the carousel can
+  // steer the camera without popping the modal open on every step.
+  focusedProjectId: null,
+  setFocusedProjectId: (id) => set({ focusedProjectId: id }),
 
   hoveredProjectId: null,
   setHoveredProjectId: (id) => set({ hoveredProjectId: id }),
